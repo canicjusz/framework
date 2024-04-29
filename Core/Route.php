@@ -7,65 +7,65 @@ class Route
   static protected $routes = [];
   static protected $dynamic_routes = [];
   public $middlewares = [];
-  public $controller;
+  public $callback;
   public $path;
   public $method;
 
-  public function __construct(string $method, string $path, object|array $controller)
+  public function __construct(string $method, string $path, object|array $callback)
   {
     $this->method = $method;
-    $this->controller = $controller;
+    $this->callback = $callback;
     $this->path = $path;
   }
 
-  static public function &addDynamic(string $method, string $path, object|array $controller, array $parameter_constraints): Route
+  static public function &addDynamic(string $method, string $path, object|array $callback, array $parameter_constraints): Route
   {
     [$dynamic_path, $parameter_names, $parameter_suffixes] = Path::translateIntoRegex($path, $parameter_constraints);
 
     // $dynamic_path = preg_replace('/\//', '\\/', $path);
     //todo reverse the $path
-    $new_route = new Route($method, $path, $controller);
+    $new_route = new Route($method, $path, $callback);
     self::$dynamic_routes[$method][$dynamic_path] = ['route' => &$new_route, 'parameters' => array_combine($parameter_names, $parameter_suffixes)];
     return $new_route;
   }
 
-  static public function &add(string $method, string $path, object|array $controller, array|null $parameter_constraints): Route
+  static public function &add(string $method, string $path, object|array $callback, array|null $parameter_constraints): Route
   {
     if (preg_match("/\/\{[\w\?\[\]]+\}/", $path)) {
       // if ($parameter_constraints) {
-      return self::addDynamic($method, $path, $controller, $parameter_constraints ?? []);
+      return self::addDynamic($method, $path, $callback, $parameter_constraints ?? []);
     }
     if (self::getNonDynamicRoute($path, $method)) {
       new \Exception("Can't reinstate route with the $method HTTP method and path '$path'.");
     }
-    $new_route = new Route($method, $path, $controller);
+    $new_route = new Route($method, $path, $callback);
     self::$routes[$method][$path] = &$new_route;
     return $new_route;
   }
 
-  static public function get(string $path, object|array $controller, array|null $parameter_constraints = null): Route
+  static public function get(string $path, object|array $callback, array|null $parameter_constraints = null): Route
   {
-    return self::add('GET', $path, $controller, $parameter_constraints);
+    return self::add('GET', $path, $callback, $parameter_constraints);
   }
 
-  static public function post(string $path, object|array $controller, array|null $parameter_constraints = null): Route
+  static public function post(string $path, object|array $callback, array|null $parameter_constraints = null): Route
   {
-    return self::add('POST', $path, $controller, $parameter_constraints);
+    return self::add('POST', $path, $callback, $parameter_constraints);
   }
 
-  static public function delete(string $path, object|array $controller, array|null $parameter_constraints = null): Route
+  static public function delete(string $path, object|array $callback, array|null $parameter_constraints = null): Route
   {
-    return self::add('DELETE', $path, $controller, $parameter_constraints);
+    return self::add('DELETE', $path, $callback, $parameter_constraints);
   }
 
-  static public function patch(string $path, object|array $controller, array|null $parameter_constraints = null): Route
+  static public function patch(string $path, object|array $callback, array|null $parameter_constraints = null): Route
   {
-    return self::add('PATCH', $path, $controller, $parameter_constraints);
+    return self::add('PATCH', $path, $callback, $parameter_constraints);
   }
 
-  static public function put(string $path, object|array $controller, array $parameter_constraints = null): Route
+  static public function put(string $path, object|array $callback, array $parameter_constraints = null): Route
   {
-    return self::add('PUT', $path, $controller, $parameter_constraints);
+    return self::add('PUT', $path, $callback, $parameter_constraints);
   }
 
   public function middleware(string $name): Route
@@ -133,7 +133,7 @@ class Route
     $method_upper = strtoupper($method);
     $exception = "The callback of the '$path' route using the $method_upper HTTP method must be either a closure or an array with a qualified name of class, followed by a method name.";
     Middleware::resolve($route->middlewares, $request);
-    $callback = callbackValidator::validate($route->controller, $exception);
+    $callback = callbackValidator::validate($route->callback, $exception);
     Renderer::renderPage($callback, $request);
   }
   //todo: remove repeating templates

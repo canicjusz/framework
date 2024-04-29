@@ -46,12 +46,6 @@ class Request
     return $this->build_url();
   }
 
-  public function set_additional_data(string $key, mixed $value)
-  {
-    $this->misc[$key] = $value;
-    return $this->misc[$key];
-  }
-
   public function build_url()
   {
     $url = $_ENV['BASE_DIR'] . $this->path;
