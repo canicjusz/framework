@@ -49,6 +49,11 @@ class Head
     $this->content .= "<link type='text/css' rel='stylesheet' href='$src' />";
     return $this;
   }
+  public function meta(string $content)
+  {
+    $this->content .= "<meta $content >";
+    return $this;
+  }
 
   public function is_empty()
   {
