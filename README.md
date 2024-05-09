@@ -5,7 +5,7 @@ This is a framework created for my personal use. Nothing too fancy, it's simply 
 Features:
 
 - [a router for dynamic and static routes](#router)
-- [a MySQL ORM (supports only SELECT statement and CTE for now)](#orm)
+- [a MySQL query builder (supports only SELECT statement and CTE for now)](#query-builder)
 - utilizes the MVC design pattern with middlewares
 - [head element is accessible and modifiable in every component of the page](#Views)
 - [environment variables support](#environment-variables)
@@ -201,6 +201,15 @@ An example file could look like this:
 
 As you can see we can add properties to the head using chainable methods. The `$head` variable is accessible in every subview/partial view and its descendants.
 
+Methods of `$head`:
+
+- `title(string $title)` - set up the title tag
+- `description(string $description)` - for description meta tag
+- `meta($content)` - for other meta tags
+- `css(string $src, bool $local = false)` - if you pass `true` as the second parameter the path will be relativized.
+- `script(string $src, bool $local = false)` - for js scripts, loads them with `defer` attribute to ensure that they work after the page load. Same case as with the `css` method
+- `js(...$args)` - alias for `script`
+
 ### Partials
 
 Partials work exactly the same way as views do, the only difference is that they should be stored inside of the `Views/Partials` directory and should be created by the `Partial` class as shown in the above code snippet.
@@ -209,7 +218,7 @@ Partials work exactly the same way as views do, the only difference is that they
 
 Are stored in the `Models` directory. They are simply classes belonging to the `Models` namespace. They can be imported to the controllers like so `use Models\Test as TestModel`.
 
-## ORM
+## Query builder
 
 ### SELECT
 
