@@ -27,7 +27,7 @@ class Middleware
       }
       $middleware = Middleware::get($name);
       $exception = "The callback of the '$name' middleware must be either a closure or an array with a qualified name of class, followed by a method name.";
-      $callback = callbackValidator::validate($middleware, $exception);
+      $callback = CallbackValidator::validate($middleware, $exception);
       call_user_func($callback, $request);
     }
   }

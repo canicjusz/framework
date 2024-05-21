@@ -48,7 +48,7 @@ class ErrorRoute
       new \Exception("Error route for code $code doesn't exist.");
     }
     $exception = "The callback of the.";
-    $callback = callbackValidator::validate($route->controller, $exception);
+    $callback = CallbackValidator::validate($route->controller, $exception);
     call_user_func($callback);
   }
 }

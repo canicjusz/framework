@@ -2,7 +2,7 @@
 
 namespace Core;
 
-class callbackValidator
+class CallbackValidator
 {
   public static function validate(object|array $callback, string $exception_message)
   {

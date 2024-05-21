@@ -133,7 +133,7 @@ class Route
     $method_upper = strtoupper($method);
     $exception = "The callback of the '$path' route using the $method_upper HTTP method must be either a closure or an array with a qualified name of class, followed by a method name.";
     Middleware::resolve($route->middlewares, $request);
-    $callback = callbackValidator::validate($route->callback, $exception);
+    $callback = CallbackValidator::validate($route->callback, $exception);
     Renderer::renderPage($callback, $request);
   }
   //todo: remove repeating templates
