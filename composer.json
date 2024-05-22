@@ -1,0 +1,18 @@
+{
+  "name": "janmichalak/framework",
+  "type": "project",
+  "require": {
+    "phpunit/phpunit": "^11.1"
+  },
+  "autoload": {
+    "files": [
+      "Core/autoloader.php"
+    ]
+  },
+  "authors": [
+    {
+      "name": "canicjusz",
+      "email": "janek.bananek371@gmail.com"
+    }
+  ]
+}
