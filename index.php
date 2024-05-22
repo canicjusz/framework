@@ -1,6 +1,5 @@
 <?php
 
-define("ROOT_PATH", __DIR__);
 $is_content_rendered = false;
 
 require 'Helpers/misc.php';

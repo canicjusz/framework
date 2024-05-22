@@ -6,7 +6,7 @@ class EnvParser
 {
   static public function parse(string $filename)
   {
-    $env = parse_ini_file(ROOT_PATH . DIRECTORY_SEPARATOR . $filename);
+    $env = parse_ini_file(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $filename);
     $default_path_variables = ['BASE_DIR', 'CSS_PATH', 'JS_PATH', 'PHOTO_PATH', 'STATIC_PATH'];
     $_ENV['BASE_DIR'] = '';
     $_ENV['CSS_PATH'] = 'public/css';
